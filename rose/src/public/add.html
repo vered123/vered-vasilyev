@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Contact Finder</title>
+    <style>
+
+        body {
+          height: 30em;
+          display: flex;
+          align-items: center;
+          justify-content: center }
+          div.container6 p {
+          margin: 0;
+        }
+
+    .app {
+        background-color:rgb(243, 124, 45) ;      
+         box-shadow: #0b0c0edf 3px 5px 10px 1px;
+        width: 750px;
+        text-align: center;
+        font-family: sans-serif;
+        padding: 10px;
+        
+    }
+
+    .header{
+        padding: 5px;
+    }
+
+
+    input {
+        padding: 5px;
+        font-size: 18px;
+        outline: none;
+        border: 1px solid #e6e6e6;  
+        color: grey;
+        margin: 5px;
+    }
+
+    button {
+        background: white;
+        padding: 8px 15px;
+        border: 1px solid #d4d4d4;
+        outline: none;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background: #f3f3f3;
+    }
+    #add {
+        width: 233px;
+        margin-bottom: 20px;
+    }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <div class="header">
+            <h1>Add Contact</h1>
+        </div>
+        <div>
+                <input type="text" placeholder="First Name" id="name">
+        </div>
+        <div>
+                <input type="text" placeholder="Last Name" id="last">
+        </div>
+        <div>
+                <input type="text" placeholder="Phone Number" id="number">
+        </div>
+        <button id="add">Add</button>
+    </div>
+    <script>
+        document.getElementById('add').addEventListener('click', () => {
+            let name = document.getElementById('name').value
+            let last = document.getElementById('last').value
+            let number = document.getElementById('number').value
+            let obj = {name, last, number}
+            fetch('/api/create?obj='+JSON.stringify(obj)).then(res => res.text()).then(res => location.href = "/")
+        })
+    </script>
+</body>
+</html>

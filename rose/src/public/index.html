@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Contact Finder</title>
+    <style>
+body{
+    height: 30em;
+    display: flex;
+    align-items: center;
+    justify-content: center }
+    div.container6 p {
+  margin: 0;
+   }
+
+    .app {
+        box-shadow: #090a0adf 3px 5px 10px 1px;
+        width: 750px;
+        text-align: center;
+        font-family: sans-serif;
+        padding: 10px;
+        background-color:rgb(243, 124, 45) ;      
+
+    }
+
+    .header{
+        padding: 5px;
+    }
+
+    #query {
+        width: 90%;
+        padding: 5px;
+        font-size: 18px;
+        outline: none;
+        border: 1px solid #e6e6e6;  
+        color: grey;
+    }
+
+    .result {
+        background-color: rgb(255, 255, 255);
+        margin: 10px;
+        box-shadow: #8a8a8a 0 0 2px;
+        padding: 5px;
+        color: rgb(0, 0, 0);
+    }
+
+    .name {
+        display:inline-block
+    }
+
+    .number {
+        display:inline-block
+    }
+    
+    .x {
+
+        float:right;
+        padding: 1px 4px;
+    }
+
+    button {
+        background: white;
+        padding: 8px 15px;
+        border: 1px solid #d4d4d4;
+        outline: none;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background: #f3f3f3;
+    }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <div class="header">
+            <h1>Contact Finder</h1>
+        </div>
+        <input type="text" name="" id="query" placeholder="Search">
+        <a href="/add.html"><button>+</button></a>
+        <div id="results">
+            <div class="result">
+                <div class="name">Loading</div>
+                <div class="number">...</div>
+                <button class="x">x</button>
+            </div>
+        </div>
+    
+    </div>
+    <script>
+        let search = query => fetch('/api/read?q='+query).then(res => res.json())
+
+        let deleteContact = id => fetch('/api/delete?id='+id).then(res => res.text()).then(()=> {console.log('done with delete'); update();})
+
+        function appendResults(results){
+            let html = '';
+            results.forEach(result => {
+                html += `
+                <div class="result">
+                    <div class="name">${result.name} ${result.last}</div> - 
+                    <div class="number">${result.number}</div>
+                    <button class="x" onclick="deleteContact('${result._id}')">x</button>
+                </div>
+                `
+                console.log(results)
+                document.getElementById('results').innerHTML = html;
+            })
+        }
+
+        
+        let update = () => {
+            let query = document.querySelector('#query').value
+            console.log(query)
+            search(query).then(appendResults)
+        }
+
+        // Default to empty query
+        search('').then(appendResults)
+
+        // Add event listener for new query inputs
+        document.querySelector('#query').addEventListener('keyup', update)
+    </script>
+</body>
+</html>
